@@ -1,0 +1,41 @@
+export DBG_VER=v1
+
+export AWS_REGION=us-east-1
+
+## Admin role you created manually
+# export ADMIN_ROLE_ARM=arn:aws:iam::633205212955:role/ec2-adm-role
+export ADMIN_ROLE_ARM=arn:aws:iam::633205212955:role/eks-smhp-admin-role
+## EKS cluster created manually from SageMaker console
+export EKS_CLUSTER_ARN=arn:aws:eks:us-east-1:633205212955:cluster/eks-smhp-0228-v2
+
+## VPC you create manually
+export VPC_ID=vpc-09048acb78ba5b08b
+## Should contain itself in BOTH ingress & egress
+export SECURITY_GROUP=sg-058078c16828809ad
+## Should be PRIVATE subnet for SMHP compute cluster
+export SUBNET_ID=subnet-00e94dbc99c07d1cf
+
+
+# Specify you compute cluster config
+## Instance type
+export ACCEL_INSTANCE_TYPE=ml.g5.8xlarge
+## THREAD_PER_CORE=2 for P5+
+export THREAD_PER_CORE=1
+## Num of accelerate compute instance
+export ACCEL_COUNT=2
+## System storage
+export ACCEL_VOLUME_SIZE=200
+## Recovery strategy - NODE_RECOVERY=Automatic or NODE_RECOVERY=None
+export NODE_RECOVERY=None
+
+
+# Will parse or create automatically
+export ADMIN_ROLE_NAME=$(echo $ADMIN_ROLE_ARM | awk -F/ '{print $NF}')
+export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+export EKS_CLUSTER_NAME=$(echo $EKS_CLUSTER_ARN | awk -F/ '{print $NF}')
+export SMHP_CLUSTER_ROLE=${EKS_CLUSTER_NAME}-Compute-Cluster-Role-${DBG_VER}
+export SMHP_CLUSTER_ROLE_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${SMHP_CLUSTER_ROLE}"
+export LIFECYCLE_S3_BUCKET=${EKS_CLUSTER_NAME}-lifecycle
+export HP_CLUSTER_NAME=${EKS_CLUSTER_NAME}-hyperpod-compute-${DBG_VER}
+export LIFECYCLE_S3_PATH=s3://${LIFECYCLE_S3_BUCKET}/${EKS_CLUSTER_NAME}/${HP_CLUSTER_NAME}/lifecycle/
+export CLUSTER_CONF_NAME=${HP_CLUSTER_NAME}-cluster-config.json
