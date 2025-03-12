@@ -41,3 +41,7 @@ cat > $CLUSTER_CONF_NAME << EOL
     "NodeRecovery": "${NODE_RECOVERY}"
 }
 EOL
+
+echo "#################################################################"
+echo "Check Cluster config - $CLUSTER_CONF_NAME and do necessary modifications (if Applicable)"
+echo "#################################################################"
