@@ -1,5 +1,5 @@
 sudo apt-get install unzip
-# sudo apt install jq -y
+sudo apt install jq -y
 
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -31,6 +31,8 @@ rm -rf awscliv2.zip
 rm -r ./kubectl
 rm -r ./get_helm.sh
 
-echo "##### Copy & Run this command to update your current shell: ##### "
-echo "source ~/.bashrc"
-echo "################################################################# "
+exec $SHELL -l
+echo ""##### Preinstall finish for Ubuntu #####"
+# echo "##### Copy & Run this command to update your current shell: ##### "
+# echo "source ~/.bashrc"
+# echo "################################################################# "

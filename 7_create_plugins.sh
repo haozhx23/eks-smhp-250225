@@ -6,4 +6,4 @@ aws eks create-addon --addon-name amazon-cloudwatch-observability --cluster-name
 
 aws eks create-addon --region $AWS_REGION --cluster-name $EKS_CLUSTER_NAME --addon-name amazon-sagemaker-hyperpod-taskgovernance
 
-aws eks describe-addon --region $AWS_REGION --cluster-name $EKS_CLUSTER_NAME --addon-name amazon-sagemaker-hyperpod-taskgovernance
+aws eks describe-addon --region $AWS_REGION --cluster-name $EKS_CLUSTER_NAME # --addon-name amazon-sagemaker-hyperpod-taskgovernance

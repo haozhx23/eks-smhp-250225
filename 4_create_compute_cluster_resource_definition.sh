@@ -31,7 +31,7 @@ cat > $CLUSTER_CONF_NAME << EOL
         },
         "ExecutionRole": "${SMHP_CLUSTER_ROLE_ARN}",
         "ThreadsPerCore": ${THREAD_PER_CORE},
-        "OnStartDeepHealthChecks": ["InstanceStress", "InstanceConnectivity"]
+        "OnStartDeepHealthChecks": ["InstanceConnectivity"]
       }
     ],
     "VpcConfig": {
@@ -41,6 +41,8 @@ cat > $CLUSTER_CONF_NAME << EOL
     "NodeRecovery": "${NODE_RECOVERY}"
 }
 EOL
+
+# "OnStartDeepHealthChecks": ["InstanceStress", "InstanceConnectivity"]
 
 echo "#################################################################"
 echo "Check Cluster config - $CLUSTER_CONF_NAME and do necessary modifications (if Applicable)"

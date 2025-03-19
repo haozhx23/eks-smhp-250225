@@ -1,19 +1,18 @@
 export DBG_VER=v1
 
-export AWS_REGION=us-east-1
+export AWS_REGION=us-west-2
 
 ## Admin role you created manually
-# export ADMIN_ROLE_ARM=arn:aws:iam::633205212955:role/ec2-adm-role
-export ADMIN_ROLE_ARM=arn:aws:iam::633205212955:role/eks-smhp-admin-role
+export ADMIN_ROLE_ARM=arn:aws:iam::633205212955:role/eks-smhp-managment-role
 ## EKS cluster created manually from SageMaker console
-export EKS_CLUSTER_ARN=arn:aws:eks:us-east-1:633205212955:cluster/eks-smhp-0228-v2
+export EKS_CLUSTER_ARN=arn:aws:eks:us-west-2:633205212955:cluster/eks-for-smhp-0319
 
 ## VPC you create manually
-export VPC_ID=vpc-09048acb78ba5b08b
+export VPC_ID=vpc-0799d159538ed3c1a
 ## Should contain itself in BOTH ingress & egress
-export SECURITY_GROUP=sg-058078c16828809ad
+export SECURITY_GROUP=sg-0420ae6f1cc0a7aed
 ## Should be PRIVATE subnet for SMHP compute cluster
-export SUBNET_ID=subnet-00e94dbc99c07d1cf
+export SUBNET_ID=subnet-0aa44819e55f9414d
 
 
 # Specify you compute cluster config

@@ -1,18 +1,23 @@
 
-aws eks create-access-entry \
- --cluster-name $EKS_CLUSTER_NAME \
- --principal-arn $ADMIN_ROLE_ARM \
- --type STANDARD \
- --region $AWS_REGION
+## If the EKS control plane is created using the ClusterManagementRole, the access-entry and associate will not be necessary
+# aws eks create-access-entry \
+#  --cluster-name $EKS_CLUSTER_NAME \
+#  --principal-arn $ADMIN_ROLE_ARM \
+#  --type STANDARD \
+#  --region $AWS_REGION
 
-aws eks associate-access-policy \
- --cluster-name $EKS_CLUSTER_NAME \
- --principal-arn $ADMIN_ROLE_ARM \
- --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
- --access-scope type=cluster \
- --region $AWS_REGION
+# aws eks associate-access-policy \
+#  --cluster-name $EKS_CLUSTER_NAME \
+#  --principal-arn $ADMIN_ROLE_ARM \
+#  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
+#  --access-scope type=cluster \
+#  --region $AWS_REGION
 
-# source ~/.bashrc
+# aws eks delete-access-entry \
+#     --cluster-name $EKS_CLUSTER_NAME \
+#     --principal-arn $EXECUTION_ROLE_ARN \
+#     --region $AWS_REGION
+
 
 aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
 ## Verify Cluster connection
@@ -41,7 +46,3 @@ echo `kubectl get crd mpijobs.kubeflow.org -n kubeflow -o jsonpath='{.status.sto
 echo `kubectl get priorityclass`
 echo '---- End Validation ----'
 
-# aws eks delete-access-entry \
-#     --cluster-name $EKS_CLUSTER_NAME \
-#     --principal-arn $EXECUTION_ROLE_ARN \
-#     --region $AWS_REGION
