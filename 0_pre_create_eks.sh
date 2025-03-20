@@ -63,7 +63,7 @@ cat > passrole-for-eks-creation-policy.json << EOL
         {
             "Effect": "Allow",
             "Action": "iam:PassRole",
-            "Resource": "${created_role_arn}"
+            "Resource": "${created_eks_role_arn}"
         }
     ]
 }
