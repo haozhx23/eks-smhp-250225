@@ -15,7 +15,7 @@ cat > $CLUSTER_CONF_NAME << EOL
     },
     "InstanceGroups": [
       {
-        "InstanceGroupName": "worker-group-1",
+        "InstanceGroupName": "compute-group-1",
         "InstanceType": "${ACCEL_INSTANCE_TYPE}",
         "InstanceCount": ${ACCEL_COUNT},
         "InstanceStorageConfigs": [
@@ -29,14 +29,14 @@ cat > $CLUSTER_CONF_NAME << EOL
           "SourceS3Uri": "${LIFECYCLE_S3_PATH}",
           "OnCreate": "on_create.sh"
         },
-        "ExecutionRole": "${SMHP_CLUSTER_ROLE_ARN}",
+        "ExecutionRole": "${SMHP_CLUSTER_EXEC_ROLE_ARN}",
         "ThreadsPerCore": ${THREAD_PER_CORE},
         "OnStartDeepHealthChecks": ["InstanceConnectivity"]
       }
     ],
     "VpcConfig": {
-      "SecurityGroupIds": ["$SECURITY_GROUP"],
-      "Subnets":["$SUBNET_ID"]
+      "SecurityGroupIds": ${SECURITY_GROUP},
+      "Subnets": ["$SUBNET_ID"]
     },
     "NodeRecovery": "${NODE_RECOVERY}"
 }

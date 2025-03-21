@@ -1,9 +1,11 @@
 
-echo "HyperPod Cluster Execution Role to be created: $SMHP_CLUSTER_ROLE"
 
+echo "Creating new S3 bucket ${LIFECYCLE_S3_BUCKET} for Cluster Lifecycle Script"
 aws s3 mb s3://${LIFECYCLE_S3_BUCKET} --region ${AWS_REGION}
 
-cat > smhp-compute-cluster-add-policy.json << EOL
+
+echo "Creating HyperPod Cluster Execution Role: $SMHP_CLUSTER_EXEC_ROLE"
+cat > smhp-compute-cluster-extra-policy.json << EOL
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -71,19 +73,19 @@ EOL
 
 # 1: Create the IAM role with the trust relationship, for SageMaker Hyperpod
 aws iam create-role \
-    --role-name $SMHP_CLUSTER_ROLE \
+    --role-name $SMHP_CLUSTER_EXEC_ROLE \
     --assume-role-policy-document file://smhp-compute-cluster-trust.json
 
 # 2: Attach the AWS-managed policy, required by SageMaker Hyperpod
 aws iam attach-role-policy \
-    --role-name $SMHP_CLUSTER_ROLE \
+    --role-name $SMHP_CLUSTER_EXEC_ROLE \
     --policy-arn arn:aws:iam::aws:policy/AmazonSageMakerClusterInstanceRolePolicy
 
-# 3: Add the inline policy defined above
+# 3: Add the inline policy defined above, required by SageMaker Hyperpod
 aws iam put-role-policy \
-    --role-name $SMHP_CLUSTER_ROLE \
-    --policy-name smhp-compute-cluster-add-policy \
-    --policy-document file://smhp-compute-cluster-add-policy.json
+    --role-name $SMHP_CLUSTER_EXEC_ROLE \
+    --policy-name smhp-compute-cluster-extra-policy \
+    --policy-document file://smhp-compute-cluster-extra-policy.json
 
 
 # 4: Add pass role permission to Cluster Management Role for HyperPod Execution Role
@@ -95,7 +97,7 @@ cat > passrole-for-smhp-creation.json << EOF
         {
             "Effect": "Allow",
             "Action": "iam:PassRole",
-            "Resource": "$SMHP_CLUSTER_ROLE_ARN"
+            "Resource": "$SMHP_CLUSTER_EXEC_ROLE_ARN"
         }
     ]
 }

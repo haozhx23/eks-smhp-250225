@@ -1,16 +1,16 @@
 	
 
-aws_region=us-west-2
+aws_region=us-east-1
 # cluster_management_role_arn=arn:aws:iam::633205212955:role/eks-smhp-managment-role
 cluster_management_role_name=eks-smhp-managment-role
 
 
-eks_controlplane_cluster_name_to_create=eks-for-smhp-0319
-eks_controlplane_role_name_to_create=eks-creation-role-0319
+eks_controlplane_cluster_name_to_create=eks-for-smhp-0321
+eks_controlplane_role_name_to_create=eks-creation-role-0321
 
-eks_subnets="subnet-0415ebbb02c13e126,subnet-0aa44819e55f9414d"
-eks_sg=sg-0420ae6f1cc0a7aed
-eks_cidr=10.19.0.1/16
+eks_subnets="subnet-0eb6ba27f14cd06ab,subnet-0296b3e96ff035fd5"
+eks_sg=sg-0794066d51b2a83b6
+eks_cidr=10.21.0.1/16
 
 
 
@@ -41,7 +41,7 @@ created_eks_role_arn=$(aws iam create-role \
 
 # created_eks_role_arn=$(aws iam get-role --role-name $eks_controlplane_role_name_to_create --query 'Role.Arn' --output text)
 
-echo "Created role ARN: $created_eks_role_arn"
+echo "Created EKS Exec role ARN: $created_eks_role_arn"
 
 
 # Attach the AWS Managed policy required for EKS role
@@ -49,7 +49,7 @@ aws iam attach-role-policy \
   --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy \
   --role-name $eks_controlplane_role_name_to_create
 
-
+echo "Add AWS managed policy AmazonEKSClusterPolicy to : $created_eks_role_arn"
 
 ##############################################################################
 ### 2. Add passrole permission to the cluster management role
@@ -74,8 +74,10 @@ aws iam put-role-policy \
     --policy-name passrole-for-eks-creation-policy \
     --policy-document file://passrole-for-eks-creation-policy.json
 
+echo "Put resource-limited passRole permission on ClusterManagementRole ($cluster_management_role_name) for resource $created_eks_role_arn"
 
-
+## make sure above changes taken effect
+sleep 10
 
 ##############################################################################
 ### 3. Create EKS Cluster
@@ -91,3 +93,8 @@ aws eks create-cluster \
     subnetIds=$eks_subnets,securityGroupIds=$eks_sg,endpointPublicAccess=true,endpointPrivateAccess=true \
   --kubernetes-network-config \
     ipFamily=ipv4,serviceIpv4Cidr=$eks_cidr
+
+
+##############################################################################
+echo "Wati untill EKS control plane cluster is InService (about 15min)"
+##############################################################################
