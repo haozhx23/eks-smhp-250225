@@ -1,0 +1,17 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:DescribeCluster",
+                "sagemaker:DescribeClusterNode",
+                "sagemaker:ListClusterNodes",
+                "sagemaker:ListClusters",
+                "eks:DescribeCluster",
+                "eks:DescribeAccessEntry"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
